@@ -1,0 +1,40 @@
+에러 발생
+1. Host의 port가 이미 사용중
+ERROR [2022-05-16 12:49:18,346] ({main} ZeppelinServer.java[main]:262) - Error while running jettyServer
+java.io.IOException: Failed to bind to /127.0.0.1:8080
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:349)
+	at org.eclipse.jetty.server.ServerConnector.open(ServerConnector.java:310)
+	at org.eclipse.jetty.server.AbstractNetworkConnector.doStart(AbstractNetworkConnector.java:80)
+	at org.eclipse.jetty.server.ServerConnector.doStart(ServerConnector.java:234)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:386)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.apache.zeppelin.server.ZeppelinServer.main(ZeppelinServer.java:253)
+Caused by: java.net.BindException: 주소가 이미 사용 중입니다
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:459)
+	at java.base/sun.nio.ch.Net.bind(Net.java:448)
+	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:227)
+	at java.base/sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:80)
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:345)
+	... 7 more
+
+==> 
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$ sudo export ZEPPELIN_ADDR=“0.0.0.0”
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$ sudo export ZEPPELIN_PORT=8989
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$ echo $ZEPPELIN_PORT
+00000
+zuser@v100-sqream:/home/zeppelin/zeppelin-0.10.1-bin-all/conf$ echo $ZEPPELIN_ADDR
+0.0.0.0
+
+2. Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+==> root 계정으로 실행시 java,DB관련 path설정이 안되어 있어서 default인 postgreSQL로 실행되면서 발생한 에러!
+==> SQREAM계정으로 재실행
+
+3. NotebookServer.java[onMessage]:461) - Can't handle message: {"op":"LIST_NOTES","principal":"anonymous","ticket":"anonymous","roles":"[]","msgId":"jltcn-2"}
+MultiException stack 1 of 6
+==> 8080포트 충돌로 인해 포트를 8989로 변경후 발생한 에러
+==> 실행시 sudo 권한으로 실행할것!
+
