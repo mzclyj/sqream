@@ -1,0 +1,16 @@
+Object Storage에 연결, 적재 시도시  아래의 Error가 발생
+
+“SSL peer certificate or SSH remote key was not OK”
+
+## AwsEndpointOverride의 주소를 HTTPS->HTTP로 변경
+## 또는 SSL 인증서를 AWS CLI에 등록해야함
+cat sqream0_config_legacy.json
+{
+    "tablespaceURL": "***",
+    "insertCompressors": 8,
+    "insertParsers": 16,
+    "spoolMemoryGB": 400,
+    "diskSpaceMinFreePercent": 5,
+    "useMetadataServer": true,
+    "AwsEndpointOverride": "http://***"
+}
