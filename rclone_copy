@@ -1,0 +1,39 @@
+기본적으로 서로 다른 Object Storage간 복사는 AWS CLI를 통해서는 불가
+
+별도의 서드파티 솔루션을 사용해야 하며 금번 PoC간엔 rclone을 사용하여 Cloudian - S3간데이터 복제를 진행 
+
+```bash
+$ cat ~/.config/rclone/rclone.conf
+[***]
+type = s3
+provider = AWS
+access_key_id = ###
+secret_access_key = ###
+region = ap-northeast-2
+location_constraint = ap-northeast-2
+server_side_encryption = AES256
+storage_class = STANDARD
+
+[***]
+type = s3
+provider = Other
+access_key_id = ###
+secret_access_key = ###
+endpoint = ***:***
+acl = private
+```
+
+```bash
+rclone ls ***:***
+==> aws s3 -> ***:*** 버킷 -> v100 디렉터리 아래의 모든 내용을 ls
+
+rclone ls ***:***
+==> *** -> sqreamdb 버킷 -> 버킷 아래의 모든 내용을 ls
+
+(API Endpoint가 HTTPS일 경우) rclone copy ***:*** ***:*** --no-check-certificate --progress
+(API Endpoint가 HTTP일 경우) rclone copy ***:*** ***:*** --progress
+
+# --no-check-certificate : SSL 인증을 사용하지 않음(인증서를 등록했을 경우 사용X)
+# --progress : 진행사항을 화면에 출력(미설정시 백그라운드에서만 작동됨)
+
+```
